@@ -24,19 +24,16 @@ const StartQuiz = () => {
   const [showInstructions, setShowInstructions] = useState(false); // ✅ حالة جديدة
   const [useQuizBackground, setUseQuizBackground] = useState(false);
 
-
-
   // ✅ بدء الكويز بفئة معينة
   const startQuiz = (selectedCategory) => {
     setCategory(selectedCategory);
     setShowInstructions(true);
     setUseQuizBackground(true); // ✅ تفعيل الخلفية الشفافة
   };
-      const beginActualQuiz = () => {
-      setIsQuizStarted(true); // ✅ عرض الكويز الحقيقي
-      setShowInstructions(false); // إخفاء الإرشادات
-    };
-    
+  const beginActualQuiz = () => {
+    setIsQuizStarted(true); // ✅ عرض الكويز الحقيقي
+    setShowInstructions(false); // إخفاء الإرشادات
+  };
 
   const imageData = [
     {
@@ -76,9 +73,18 @@ const StartQuiz = () => {
   // ✅ تحديث CSS Variables بناءً على الصورة الحالية
   useEffect(() => {
     document.documentElement.style.setProperty("--main-color", active.color);
-    document.documentElement.style.setProperty("--secondary-color", active.secondaryColor);
-    document.documentElement.style.setProperty("--main-color-transparent", bodyBgColor);
-    document.documentElement.style.setProperty("--main-border-color", borderColor);
+    document.documentElement.style.setProperty(
+      "--secondary-color",
+      active.secondaryColor
+    );
+    document.documentElement.style.setProperty(
+      "--main-color-transparent",
+      bodyBgColor
+    );
+    document.documentElement.style.setProperty(
+      "--main-border-color",
+      borderColor
+    );
   }, [activeIndex]);
 
   // ✅ فلترة الأسئلة حسب الفئة المختارة
@@ -86,50 +92,49 @@ const StartQuiz = () => {
     const shuffled = [...arr].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, count);
   };
-  
+
   const filteredQuestions = getRandomQuestions(
     questions.filter((q) => q.category === category),
     10 // عدد الأسئلة المطلوبة
   );
-  
+
   return (
     <div
       className="quiz-body"
       style={{
         backgroundColor: useQuizBackground ? "transparent" : bodyBgColor,
         transition: !isQuizStarted ? "background-color 2s ease-in-out" : "none",
-          }}
+      }}
     >
       <BackgroundImage imageData={imageData} activeIndex={activeIndex} />
 
       {!isQuizStarted && !showInstructions && (
-  <StartContainer
-    containerBgColor={containerBgColor}
-    borderColor={borderColor}
-    handleMouseEnter={handleMouseEnter}
-    handleMouseLeave={handleMouseLeave}
-    startQuiz={startQuiz}
-  />
-)}
+        <StartContainer
+          containerBgColor={containerBgColor}
+          borderColor={borderColor}
+          handleMouseEnter={handleMouseEnter}
+          handleMouseLeave={handleMouseLeave}
+          startQuiz={startQuiz}
+        />
+      )}
 
-{showInstructions && !isQuizStarted && (
-  <InstructionsContainer
-  borderColor={borderColor}
-  onStartQuiz={beginActualQuiz}
-  containerBgColor={containerBgColor}
-  
-  />
-)}
+      {showInstructions && !isQuizStarted && (
+        <InstructionsContainer
+          borderColor={borderColor}
+          onStartQuiz={beginActualQuiz}
+          containerBgColor={containerBgColor}
+        />
+      )}
 
-{isQuizStarted && (
-  <QuizContainer
-    borderColor={borderColor}
-    handleMouseEnter={handleMouseEnter}
-    handleMouseLeave={handleMouseLeave}
-    questions={filteredQuestions}
-    isQuizStarted={isQuizStarted}
-  />
-)}
+      {isQuizStarted && (
+        <QuizContainer
+          borderColor={borderColor}
+          handleMouseEnter={handleMouseEnter}
+          handleMouseLeave={handleMouseLeave}
+          questions={filteredQuestions}
+          isQuizStarted={isQuizStarted}
+        />
+      )}
     </div>
   );
 };

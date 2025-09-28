@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Timer from "./timer";
 import CircularProgress from "@mui/joy/CircularProgress";
 import Box from "@mui/joy/Box";
+import { useMediaQuery } from "@mui/material";
 
 const QuizContainer = ({
   duration = 600,
@@ -88,6 +89,7 @@ const QuizContainer = ({
 
   // ✅ إعداد دائرة الوقت
   const advancement = (timeLeft / duration) * 100;
+  const isSmallScreen = useMediaQuery("(max-width:768px)");
 
   return (
     <div className="main-quiz">
@@ -107,44 +109,50 @@ const QuizContainer = ({
           {minutes}:{seconds}
         </div>
         </div>*/}
-      <Box
-        sx={{
-          position: "relative",
-          display: "inline-flex",
-          alignItems: "flex-start",
-          justifyContent: "center",
-        }}
-      >
-        {/* الخلفية الكاملة */}
-        <Box
-          sx={{
-            position: "absolute",
-            width: "9vw",
-            height: "9vw",
-            borderRadius: "50%",
-            backgroundColor: "#ffffffff", // 👈 لون الخلفية
-            zIndex: 0,
-          }}
-        />
 
-        {/* دائرة التقدم */}
-        <CircularProgress
-          className="circle-bg"
-          sx={{
-            "--CircularProgress-trackThickness": "0.8784773060029283vw",
-            "--CircularProgress-progressThickness": "0.9516837481698389vw",
-            "--CircularProgress-size": "10vw",
-            "--CircularProgress-progressColor": borderColor || "primary.500",
-            zIndex: 1,
-          }}
-          determinate
-          value={advancement}
-        >
-          <div className="timer-text">
-            {minutes}:{seconds}
-          </div>
-        </CircularProgress>
-      </Box>
+      <>
+        {!isSmallScreen && (
+          <Box
+            sx={{
+              position: "relative",
+              display: "inline-flex",
+              alignItems: "flex-start",
+              justifyContent: "center",
+            }}
+          >
+            {/* الخلفية الكاملة */}
+            <Box
+              sx={{
+                position: "absolute",
+                width: "9vw",
+                height: "9vw",
+                borderRadius: "50%",
+                backgroundColor: "#ffffffff", // 👈 لون الخلفية
+                zIndex: 0,
+              }}
+            />
+
+            {/* دائرة التقدم */}
+            <CircularProgress
+              className="circle-bg"
+              sx={{
+                "--CircularProgress-trackThickness": "0.8784773060029283vw",
+                "--CircularProgress-progressThickness": "0.9516837481698389vw",
+                "--CircularProgress-size": "10vw",
+                "--CircularProgress-progressColor":
+                  borderColor || "primary.500",
+                zIndex: 1,
+              }}
+              determinate
+              value={advancement}
+            >
+              <div className="timer-text">
+                {minutes}:{seconds}
+              </div>
+            </CircularProgress>
+          </Box>
+        )}
+      </>
 
       <div
         className="start-container"
@@ -156,6 +164,53 @@ const QuizContainer = ({
           flexDirection: "column",
         }}
       >
+        <>
+          {isSmallScreen && (
+            <Box
+              sx={{
+                position: "relative",
+                display: "inline-flex",
+                alignItems: "flex-start",
+                justifyContent: "center",
+              }}
+            >
+              {/* الخلفية الكاملة */}
+              <Box
+                sx={{
+                  position: "absolute",
+                  width: "9vw",
+                  height: "9vw",
+                  borderRadius: "50%",
+                  backgroundColor: "#ffffffff", // 👈 لون الخلفية
+                  zIndex: 0,
+                }}
+              />
+
+              {/* دائرة التقدم */}
+              <CircularProgress
+                className="circle-bg"
+                sx={{
+                  "--CircularProgress-trackThickness": "8px",
+                  "--CircularProgress-progressThickness": "8px",
+                  "--CircularProgress-size": "70px",
+                  "--CircularProgress-progressColor":
+                    borderColor || "primary.500",
+                  zIndex: 1,
+                }}
+                style={{
+                  margin: "6px 0px",
+                }}
+                determinate
+                value={advancement}
+              >
+                <div className="text-timer-pimery">
+                  {minutes}:{seconds}
+                </div>
+              </CircularProgress>
+            </Box>
+          )}
+        </>
+
         <div className="Question-titlee">
           <div className="Question-title">
             <span className="question-label">Q{currentQuestionIndex + 1}</span>
