@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from "react";
+import img0 from "../assets/img/markus-spiske-KWQ2kQtxiKE-unsplash 3.png";
+import img1 from "../assets/img/image 133.png";
+import img2 from "../assets/img/image 127.png";
+import img3 from "../assets/img/image 130.png";
 import BackgroundImage from "../componant/quiz/background-image";
 import StartContainer from "../componant/quiz/StartContainer";
 import QuizContainer from "../componant/quiz/QuizContainer";
-import questions from "../data/questions"; // ✅ استيراد الأسئلة
-import InstructionsContainer from "../componant/quiz/InstructionsContainer"; // ✅ استيراد
+import questions from "../data/questions";
+import InstructionsContainer from "../componant/quiz/InstructionsContainer";
 
-const img0 =
-  "https://i.postimg.cc/FsYY229h/markus-spiske-KWQ2k-Qtxi-KE-unsplash-3.png";
-const img1 = "https://i.postimg.cc/pTk9Hvh8/image-133.png";
-const img2 = "https://i.postimg.cc/tR2P03Ww/image-127.png";
-const img3 = "https://i.postimg.cc/qRQtTrht/image-130.png";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
-// تحويل hex إلى rgba
 const hexToRGBA = (hex, alpha = 1) => {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
@@ -20,36 +24,54 @@ const hexToRGBA = (hex, alpha = 1) => {
 };
 
 const StartQuiz = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isQuizStarted, setIsQuizStarted] = useState(false);
-  const [category, setCategory] = useState(null);
-  const [showInstructions, setShowInstructions] = useState(false); // ✅ حالة جديدة
-  const [useQuizBackground, setUseQuizBackground] = useState(false);
+  // ✅ تحميل الحالة من localStorage فقط عند الريفريش
+  const savedState = JSON.parse(localStorage.getItem("quizState")) || {};
 
-  useEffect(() => {
-    const handleBeforeUnload = (e) => {
-      e.preventDefault();
-      e.returnValue = ""; // مهم لمنع الريفريش الافتراضي
-      return "";
-    };
+  const [activeIndex, setActiveIndex] = useState(savedState.activeIndex || 0);
+  const [isQuizStarted, setIsQuizStarted] = useState(
+    savedState.isQuizStarted || false
+  );
+  const [category, setCategory] = useState(savedState.category || null);
+  const [showInstructions, setShowInstructions] = useState(
+    savedState.showInstructions || false
+  );
+  const [useQuizBackground, setUseQuizBackground] = useState(
+    savedState.useQuizBackground || false
+  );
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, []);
-
-  // ✅ بدء الكويز بفئة معينة
+  // ✅ بداية الكويز
   const startQuiz = (selectedCategory) => {
     setCategory(selectedCategory);
     setShowInstructions(true);
-    setUseQuizBackground(true); // ✅ تفعيل الخلفية الشفافة
+    setUseQuizBackground(true);
   };
+
+  // ✅ بدء الكويز الفعلي
   const beginActualQuiz = () => {
-    setIsQuizStarted(true); // ✅ عرض الكويز الحقيقي
-    setShowInstructions(false); // إخفاء الإرشادات
+    setIsQuizStarted(true);
+    setShowInstructions(false);
   };
+
+   const [refreshDialogOpen, setRefreshDialogOpen] = React.useState(false);
+
+  // ✅ افتح الدايالوج عند الريفريش
+  React.useEffect(() => {
+    const navigationType = performance.getEntriesByType("navigation")[0]?.type;
+
+    if (navigationType === "reload") {
+      setRefreshDialogOpen(true);
+    }
+  }, []);
+
+  const handleRefreshDialogClose = () => {
+    setRefreshDialogOpen(false);
+  };
+
+  const handleRestartQuiz = () => {
+    // 🔁 منطق إعادة الاختبار
+    window.location.reload();
+  };
+
 
   const imageData = [
     {
@@ -86,7 +108,7 @@ const StartQuiz = () => {
   const containerBgColor = active.secondaryColor;
   const borderColor = hexToRGBA(active.color, 0.8);
 
-  // ✅ تحديث CSS Variables بناءً على الصورة الحالية
+  // ✅ تحديث الـ CSS
   useEffect(() => {
     document.documentElement.style.setProperty("--main-color", active.color);
     document.documentElement.style.setProperty(
@@ -103,7 +125,27 @@ const StartQuiz = () => {
     );
   }, [activeIndex]);
 
-  // ✅ فلترة الأسئلة حسب الفئة المختارة
+  // ✅ تخزين الحالة فقط لأجل الريفريش
+  useEffect(() => {
+    localStorage.setItem(
+      "quizState",
+      JSON.stringify({
+        activeIndex,
+        isQuizStarted,
+        category,
+        showInstructions,
+        useQuizBackground,
+      })
+    );
+  }, [
+    activeIndex,
+    isQuizStarted,
+    category,
+    showInstructions,
+    useQuizBackground,
+  ]);
+
+  // ✅ فلترة الأسئلة حسب الفئة
   const getRandomQuestions = (arr, count) => {
     const shuffled = [...arr].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, count);
@@ -111,7 +153,7 @@ const StartQuiz = () => {
 
   const filteredQuestions = getRandomQuestions(
     questions.filter((q) => q.category === category),
-    10 // عدد الأسئلة المطلوبة
+    10
   );
 
   return (
@@ -151,7 +193,10 @@ const StartQuiz = () => {
           isQuizStarted={isQuizStarted}
         />
       )}
+      
     </div>
+
+    
   );
 };
 

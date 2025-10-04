@@ -60,11 +60,12 @@ const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [scrollUp, setScrollUp] = useState(true);
   const [lastScrollTop, setLastScrollTop] = useState(window.scrollY);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScroll = window.scrollY;
-      
+
       // تفعيل الكلاس إذا تم التمرير للأسفل
       setScrolled(currentScroll > 0);
 
@@ -97,13 +98,45 @@ const Header = () => {
           />
         </div>
 
-        <nav className="custom-header__nav">
-          <Link to="/" className="link">Home</Link>
-          <a href="#about">About</a>
-          <a href="#contact">API content</a>
+        {/* زر البرغر */}
+        {/* زر البرغر */}
+        <div
+          className={`burger ${menuOpen ? "burger--open" : ""}`}
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          <span
+            style={{ backgroundColor: scrolled ? "rgb(39, 165, 104)" : "#fff" }}
+          ></span>
+          <span
+            style={{ backgroundColor: scrolled ? "rgb(39, 165, 104)" : "#fff" }}
+          ></span>
+          <span
+            style={{ backgroundColor: scrolled ? "rgb(39, 165, 104)" : "#fff" }}
+          ></span>
+        </div>
+
+        {/* القائمة */}
+        <nav className={`custom-header__nav ${menuOpen ? "open" : ""}`}>
+          <Link to="/" className="link" onClick={() => setMenuOpen(false)}>
+            Home
+          </Link>
+          <a href="#about" onClick={() => setMenuOpen(false)}>
+            About
+          </a>
+          <a href="#contact" onClick={() => setMenuOpen(false)}>
+            API content
+          </a>
+          <Link
+            to="/Login"
+            className="custom-header__login-btn mobile-btn"
+            onClick={() => setMenuOpen(false)}
+          >
+            Login
+          </Link>
         </nav>
 
-        <Link to="/Login" className="custom-header__login-btn">
+        {/* زر login العادي */}
+        <Link to="/Login" className="custom-header__login-btn desktop-btn">
           Login
         </Link>
       </div>
@@ -112,4 +145,3 @@ const Header = () => {
 };
 
 export default Header;
-

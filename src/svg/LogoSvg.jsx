@@ -7,8 +7,7 @@ const LogoSvg = ({
 }) => {
   return (
     <svg
-      width="14vw"
-      height="6vh"
+    className="logo-Header"
       viewBox="0 0 240 54"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

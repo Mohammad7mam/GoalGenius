@@ -1,6 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from "react";
 import LogoSvg from "../svg/LogoSvg";
-
 
 const YoutubeComponent = () => {
   const playerRef = useRef(null);
@@ -8,9 +7,9 @@ const YoutubeComponent = () => {
   useEffect(() => {
     // تحميل سكربت YouTube API
     if (!window.YT) {
-      const tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      const firstScriptTag = document.getElementsByTagName('script')[0];
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      const firstScriptTag = document.getElementsByTagName("script")[0];
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     } else {
       createPlayer();
@@ -23,7 +22,7 @@ const YoutubeComponent = () => {
     function createPlayer() {
       if (playerRef.current) {
         new window.YT.Player(playerRef.current, {
-          videoId: 'RDo094vBnEA',
+          videoId: "RDo094vBnEA",
           playerVars: {
             autoplay: 0,
             controls: 1,
@@ -32,7 +31,7 @@ const YoutubeComponent = () => {
           },
           events: {
             onReady: () => {
-              console.log('YouTube Player Ready');
+              console.log("YouTube Player Ready");
             },
           },
         });
@@ -64,12 +63,8 @@ const YoutubeComponent = () => {
       {/* الفوتر أيضًا عليه تأثير */}
       <footer className="youtubeComponent__overlay__footer">
         <div className="youtubeComponent__footer">
-          <LogoSvg
-            fill1={"#FFf"}
-            fill2={ "#Fff"}
-            fill3={ "#FFf"}
-          />
-          <p style={{color:"#FFf"}}>© 2025 Footer with background effect</p>
+          <LogoSvg fill1={"#FFf"} fill2={"#Fff"} fill3={"#FFf"} />
+          {/* <p style={{color:"#FFf"}}>© 2025 Footer with background effect</p> */}
         </div>
       </footer>
     </div>

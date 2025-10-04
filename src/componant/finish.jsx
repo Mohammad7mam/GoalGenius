@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import WrongAnswersTable from "../componant/quiz/WrongAnswersTable";
-
 
 export default function Finish() {
   const [score, setScore] = useState(0);
-  const [total, setTotal] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
     const answers = JSON.parse(sessionStorage.getItem("quizAnswers")) || [];
     const correctAnswers = answers.filter((ans) => ans.isCorrect).length;
     setScore(correctAnswers);
-    setTotal(answers.length);
   }, []);
 
   const handleRetry = () => {
@@ -25,8 +21,13 @@ export default function Finish() {
     navigate("/");
   };
 
-  const percentage = total > 0 ? (score / total) * 100 : 0;
-  const successColor = percentage >= 50 ? "#00DF68" : "#EA2626";
+  // ✅ العلامة من 10 فقط
+  const total = 10;
+
+  // ✅ النسبة المئوية من 10 (لعرض اللون والدائرة)
+  const percentage = (score / total) * 100;
+
+  const successColor = score >= 5 ? "#00DF68" : "#EA2626";
 
   return (
     <div className="finish-page">
@@ -43,14 +44,11 @@ export default function Finish() {
         <div
           className="score-circle"
           style={{
-            background: `conic-gradient(${successColor} ${percentage}%, #e0e0e0 ${percentage}%)`
+            background: `conic-gradient(${successColor} ${percentage}%, #e0e0e0 ${percentage}%)`,
           }}
         >
-          <div
-            className="score-content"
-            style={{ color: successColor }}
-          >
-            {score} / {total}
+          <div className="score-content" style={{ color: successColor }}>
+            {score} / 10
           </div>
         </div>
 
@@ -59,7 +57,7 @@ export default function Finish() {
             className="btn retry"
             onClick={handleRetry}
             style={{
-              backgroundColor: percentage >= 50 ? successColor : "#EA2626"
+              backgroundColor: score >= 5 ? successColor : "#EA2626",
             }}
           >
             Retry
@@ -69,7 +67,6 @@ export default function Finish() {
           </button>
         </div>
       </div>
-      
     </div>
   );
 }

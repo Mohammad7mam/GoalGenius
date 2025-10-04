@@ -13,9 +13,9 @@ const QuizContainer = ({
 }) => {
   const navigate = useNavigate();
   const [timeLeft, setTimeLeft] = useState(duration);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
   const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   const question = questions[currentQuestionIndex];
 
@@ -32,7 +32,7 @@ const QuizContainer = ({
   // ✅ مؤقت انتهاء الوقت
   useEffect(() => {
     if (timeLeft <= 0) {
-      navigate("/timeout");
+      navigate("/finished");
       return;
     }
 

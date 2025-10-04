@@ -1,26 +1,32 @@
-import React, { useState, useEffect, useRef } from 'react';
-import img1 from "../assets/img/fabian-schultz-YglH7suWggQ-unsplash 2.png";
-import img2 from "../assets/img/philbo-PMwa1zfOYaU-unsplash 2.png";
-import img3 from "../assets/img/Untitled-2-031 3.png";
-import img4 from "../assets/img/omar-ram-cE1U5cok7JA-unsplash 4.png";
-import img5 from "../assets/img/andrii-solok-Nmrxc-l86Bc-unsplash 2.png";
+import React, { useState, useEffect, useRef } from "react";
 
+const img1 =
+  "https://i.postimg.cc/1X4k30tv/fabian-schultz-Ygl-H7su-Wgg-Q-unsplash-2.png";
+const img2 =
+  "https://i.postimg.cc/KzpWwK5C/philbo-PMwa1zf-OYa-U-unsplash-2.png";
+const img3 = "https://i.postimg.cc/BbrJW7g0/Untitled-2-031-3.png";
+
+const img4 =
+  "https://i.postimg.cc/502Gs58k/omar-ram-c-E1-U5cok7-JA-unsplash-4.png";
+
+const img5 =
+  "https://i.postimg.cc/MH4hMcMP/andrii-solok-Nmrxc-l86-Bc-unsplash-2.png";
 const images = [img1, img3, img4, img5, img2];
 
 const blendModes = [
-  'hard-light',
-  'hard-light',
-  'hard-light',
-  'hard-light',
-  'hard-light',
+  "hard-light",
+  "hard-light",
+  "hard-light",
+  "hard-light",
+  "hard-light",
 ];
 
 const backgroundColors = [
-  '#005F2D',
-  '#005F2D',
-  '#005F2D',
-  '#005F2D',
-  '#009245',
+  "#005F2D",
+  "#005F2D",
+  "#005F2D",
+  "#005F2D",
+  "#009245",
 ];
 
 const Slideshow = () => {
@@ -51,7 +57,7 @@ const Slideshow = () => {
     clearInterval(intervalRef.current);
     intervalRef.current = setInterval(() => {
       changeImage(true);
-    }, 20000);
+    }, 10000);
   };
 
   useEffect(() => {
@@ -74,7 +80,7 @@ const Slideshow = () => {
         <img
           key={index}
           className={`slideshow-image ${
-            index === currentIndex ? 'active' : 'inactive'
+            index === currentIndex ? "active" : "inactive"
           }`}
           src={image}
           alt={`Slide ${index}`}
