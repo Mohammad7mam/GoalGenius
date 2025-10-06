@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <div className="hero-container1">
       <div className="hero1-content">
-        <h1>Hi {userName ? userName : "there"}, welcome to the QuizBall</h1>
+        <h1>Hi {userName ? userName : "there"}, welcome to the GoalGenius</h1>
 
         <div className="buttons">
           <Link to="/quiz" className="btn-primary">
